@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2887B138-034D-45A4-9CA9-5233D7C1726B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeManagementSystem.Blazor", "src\EmployeeManagementSystem.Blazor\EmployeeManagementSystem.Blazor.csproj", "{D23A524B-3CAD-4247-84D1-479783D80C2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagementSystem.Blazor", "src\EmployeeManagementSystem.Blazor\EmployeeManagementSystem.Blazor.csproj", "{D23A524B-3CAD-4247-84D1-479783D80C2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

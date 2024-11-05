@@ -1,0 +1,33 @@
+﻿@page "/Account/Logout"
+
+@using EmployeeManagementSystem.Blazor.Data
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc
+
+@inject IdentityRedirectManager RedirectManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<PageTitle>Log out</PageTitle>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpMethods.IsPost(HttpContext.Request.Method))
+        {
+            if (SignInManager.IsSignedIn(HttpContext.User))
+            {
+                await SignInManager.SignOutAsync();
+            }
+        }
+
+        RedirectManager.RedirectTo(ReturnUrl);
+    }
+}
