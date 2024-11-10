@@ -1,0 +1,55 @@
+﻿@page "/"
+
+@using EmployeeManagementSystem.Blazor.Extensions
+@using EmployeeManagementSystem.Blazor.Models
+@using EmployeeManagementSystem.Blazor.Services
+
+<PageTitle>EMS - Employees</PageTitle>
+
+@if(_employees != null)
+{
+    <Card>
+        <div class="table-responsive w-100">
+            <table class="table table-borderless mb-0">
+                <tbody>
+                    @foreach(var employee in _employees)
+                    {
+                        <tr class="shadow-lg m-1 employee-row mb-5">
+                            <td class="text-center align-middle">
+                                <img class="rounded-circle" width="60" src="@employee.ImageUrl" />
+                            </td>
+                            <td class="align-middle">
+                                <div class="pt-2">
+                                    <div class="fs-5 fw-bold lh-sm">
+                                        @employee.Name
+                                    </div>
+                                    <div class="lh-sm">
+                                        @employee.JobTitle.GetDisplayName()
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center align-middle employee-(employee.EmployeeType)">
+                                @employee.EmployeeType.GetDisplayName()
+                            </td>
+                            <td class="text-center align-middle fs-6 fw-bold">
+                                $@employee.Salary
+                            </td>
+                        </tr>
+                    }                    
+                </tbody>
+            </table>
+        </div>
+    </Card>
+}
+
+@code {
+    [Inject] private IEmployeeService EmployeeService { get; set; }
+
+    private List<Employee>? _employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await EmployeeService.GetEmployees();
+        _employees = response.Employees;
+    }
+}

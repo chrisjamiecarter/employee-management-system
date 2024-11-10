@@ -1,6 +1,7 @@
 using EmployeeManagementSystem.Blazor.Components;
 using EmployeeManagementSystem.Blazor.Components.Account;
 using EmployeeManagementSystem.Blazor.Data;
+using EmployeeManagementSystem.Blazor.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,8 @@ public class Program
         .AddDefaultTokenProviders();
 
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+        builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
         var app = builder.Build();
 
