@@ -52,7 +52,12 @@ public class EmployeeService(IDbContextFactory<ApplicationDbContext> factory) : 
         {
             using var context = await factory.CreateDbContextAsync();
 
-            var employees = await context.Employees.ToListAsync();
+            var employees = await context.Employees
+                .OrderBy(e => e.JobTitle)
+                .ThenBy(e => e.EmployeeType)
+                .ThenBy(e => e.Salary)
+                .ThenBy(e => e.Name)
+                .ToListAsync();
 
             return new GetEmployeesResponse
             {
