@@ -1,7 +1,9 @@
-﻿using EmployeeManagementSystem.Blazor.Models.Responses;
+﻿using EmployeeManagementSystem.Blazor.Models.Requests;
+using EmployeeManagementSystem.Blazor.Models.Responses;
 
 namespace EmployeeManagementSystem.Blazor.Services;
 public interface IEmployeeService
 {
-    Task<GetEmployeesResponse> GetEmployees();
+    Task<BaseResponse> AddEmployeeAsync(AddEmployeeRequest request);
+    Task<GetEmployeesResponse> GetEmployeesAsync();
 }

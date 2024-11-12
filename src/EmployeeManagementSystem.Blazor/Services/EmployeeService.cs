@@ -1,4 +1,7 @@
-﻿using EmployeeManagementSystem.Blazor.Data;
+﻿using System;
+using EmployeeManagementSystem.Blazor.Data;
+using EmployeeManagementSystem.Blazor.Models.Mappings;
+using EmployeeManagementSystem.Blazor.Models.Requests;
 using EmployeeManagementSystem.Blazor.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +9,44 @@ namespace EmployeeManagementSystem.Blazor.Services;
 
 public class EmployeeService(IDbContextFactory<ApplicationDbContext> factory) : IEmployeeService
 {
-    public async Task<GetEmployeesResponse> GetEmployees()
+    public async Task<BaseResponse> AddEmployeeAsync(AddEmployeeRequest request)
+    {
+        try
+        {
+            using var context = await factory.CreateDbContextAsync();
+
+            await context.Employees.AddAsync(request.ToDomain());
+
+            var created = await context.SaveChangesAsync();
+
+            if (created > 0)
+            {
+                return new BaseResponse
+                {
+                    StatusCode = 200,
+                    Message = "Success",
+                };
+            }
+            else
+            {
+                return new BaseResponse
+                {
+                    StatusCode = 400,
+                    Message = $"Error adding employee",
+                };
+            }
+        }
+        catch (Exception exception)
+        {
+            return new BaseResponse
+            {
+                StatusCode = 500,
+                Message = $"Error adding employee: {exception.Message}",
+            };
+        }
+    }
+
+    public async Task<GetEmployeesResponse> GetEmployeesAsync()
     {
         try
         {
@@ -20,7 +60,6 @@ public class EmployeeService(IDbContextFactory<ApplicationDbContext> factory) : 
                 Message = "Success",
                 Employees = employees,
             };
-
         }
         catch (Exception exception)
         {

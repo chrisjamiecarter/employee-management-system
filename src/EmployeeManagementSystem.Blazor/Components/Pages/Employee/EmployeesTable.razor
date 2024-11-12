@@ -3,6 +3,9 @@
 @using EmployeeManagementSystem.Blazor.Extensions
 @using EmployeeManagementSystem.Blazor.Models
 @using EmployeeManagementSystem.Blazor.Services
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 <PageTitle>EMS - Employees</PageTitle>
 
@@ -49,7 +52,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await EmployeeService.GetEmployees();
+        var response = await EmployeeService.GetEmployeesAsync();
         _employees = response.Employees;
     }
 }

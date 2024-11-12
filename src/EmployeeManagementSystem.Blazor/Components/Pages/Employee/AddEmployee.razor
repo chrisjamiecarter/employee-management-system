@@ -1,0 +1,75 @@
+﻿@page "/Employees/Add"
+
+@using EmployeeManagementSystem.Blazor.Enums
+@using EmployeeManagementSystem.Blazor.Extensions
+@using EmployeeManagementSystem.Blazor.Models.Requests
+@using EmployeeManagementSystem.Blazor.Services
+@using Microsoft.AspNetCore.Authorization
+
+@rendermode InteractiveServer
+
+@attribute [Authorize]
+
+<PageTitle>EMS - Add Employee</PageTitle>
+
+<Card>
+    <div class="row user-detail-row">
+        <h3>Add Employee</h3>
+        <div class="form-group">
+
+            <EditForm Model="@addEmployeeRequest" method="post" OnValidSubmit="AddEmployeeAsync" FormName="AddEmployee">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" role="alert" />
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="addEmployeeRequest.Name" class="form-control" id="floatingInputName" placeholder="Name" />
+                    <label for="floatingInputName">Name</label>
+                    <ValidationMessage For="() => addEmployeeRequest.Name" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputNumber @bind-Value="addEmployeeRequest.Salary" class="form-control" id="floatingInputSalary" placeholder="Salary" />
+                    <label for="floatingInputSalary">Salary</label>
+                    <ValidationMessage For="() => addEmployeeRequest.Salary" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputSelect @bind-Value="addEmployeeRequest.EmployeeType" class="form-control" id="floatingInputEmployeeType" placeholder="Type">
+                        @foreach (EmployeeType type in Enum.GetValues(typeof(EmployeeType)))
+                        {
+                            <option value="@type">@type.GetDisplayName()</option>
+                        }
+                    </InputSelect>
+                    <label for="floatingInputEmployeeType">Type</label>
+                    <ValidationMessage For="() => addEmployeeRequest.EmployeeType" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputSelect @bind-Value="addEmployeeRequest.JobTitle" class="form-control" id="floatingInputJobTitle" placeholder="Job Title">
+                        @foreach (JobTitle jobTitle in Enum.GetValues(typeof(JobTitle)))
+                        {
+                            <option value="@jobTitle">@jobTitle.GetDisplayName()</option>
+                        }
+                    </InputSelect>
+                    <label for="floatingInputJobTitle">Job Title</label>
+                    <ValidationMessage For="() => addEmployeeRequest.JobTitle" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="addEmployeeRequest.ImageUrl" class="form-control" id="floatingInputImageUrl" placeholder="Image URL" />
+                    <label for="floatingInputImageUrl">Image URL</label>
+                    <ValidationMessage For="() => addEmployeeRequest.ImageUrl" class="text-danger" />
+                </div>
+                <button class="btn btn-outline-secondary" type="submit">Submit</button>
+            </EditForm>
+        </div>
+    </div>
+</Card>
+
+@code {
+    [Inject] private IEmployeeService EmployeeService { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; }
+
+    private AddEmployeeRequest addEmployeeRequest = new();
+
+    private async Task AddEmployeeAsync()
+    {
+        var response = await EmployeeService.AddEmployeeAsync(addEmployeeRequest);
+        NavigationManager.NavigateTo("/");
+    }
+}
