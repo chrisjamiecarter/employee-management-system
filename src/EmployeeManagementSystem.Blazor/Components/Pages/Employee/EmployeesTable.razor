@@ -5,6 +5,8 @@
 @using EmployeeManagementSystem.Blazor.Services
 @using Microsoft.AspNetCore.Authorization
 
+@rendermode InteractiveServer
+
 @attribute [Authorize]
 
 <PageTitle>EMS - Employees</PageTitle>
@@ -37,6 +39,9 @@
                             <td class="text-center align-middle fs-6 fw-bold text-nowrap text-truncate overflow-hidden">
                                 $@employee.Salary
                             </td>
+                            <td class="text-center align-middle text-nowrap text-truncate overflow-hidden">
+                                <TableButton OnClickCallback="@(() => NavigateToEmployeeDetail(employee.Id))" />
+                            </td>
                         </tr>
                     }                    
                 </tbody>
@@ -47,6 +52,7 @@
 
 @code {
     [Inject] private IEmployeeService EmployeeService { get; set; }
+    [Inject] private NavigationManager NavigationManager { get; set; }
 
     private List<Employee>? _employees;
 
@@ -54,5 +60,10 @@
     {
         var response = await EmployeeService.GetEmployeesAsync();
         _employees = response.Employees;
+    }
+
+    private void NavigateToEmployeeDetail(Guid id)
+    {
+        NavigationManager.NavigateTo($"/Employees/{id}");
     }
 }

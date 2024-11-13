@@ -17,4 +17,16 @@ public static class EmployeeMappings
             JobTitle = request.JobTitle,
         };
     }
+
+    public static EditEmployeeRequest ToRequest(this Employee domain)
+    {
+        return new EditEmployeeRequest
+        {
+            Name = domain.Name,
+            ImageUrl = domain.ImageUrl,
+            Salary = domain.Salary,
+            EmployeeType = domain.EmployeeType,
+            JobTitle = domain.JobTitle,
+        };
+    }
 }

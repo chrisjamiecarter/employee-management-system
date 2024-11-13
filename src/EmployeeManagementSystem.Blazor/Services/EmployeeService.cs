@@ -1,5 +1,5 @@
-﻿using System;
-using EmployeeManagementSystem.Blazor.Data;
+﻿using EmployeeManagementSystem.Blazor.Data;
+using EmployeeManagementSystem.Blazor.Models;
 using EmployeeManagementSystem.Blazor.Models.Mappings;
 using EmployeeManagementSystem.Blazor.Models.Requests;
 using EmployeeManagementSystem.Blazor.Models.Responses;
@@ -42,6 +42,119 @@ public class EmployeeService(IDbContextFactory<ApplicationDbContext> factory) : 
             {
                 StatusCode = 500,
                 Message = $"Error adding employee: {exception.Message}",
+            };
+        }
+    }
+
+    public async Task<BaseResponse> DeleteEmployeeAsync(Employee employee)
+    {
+        try
+        {
+            using var context = await factory.CreateDbContextAsync();
+
+            context.Employees.Remove(employee);
+
+            var deleted = await context.SaveChangesAsync();
+
+            if (deleted > 0)
+            {
+                return new BaseResponse
+                {
+                    StatusCode = 200,
+                    Message = "Success",
+                };
+            }
+            else
+            {
+                return new BaseResponse
+                {
+                    StatusCode = 400,
+                    Message = $"Error deleting employee",
+                };
+            }
+        }
+        catch (Exception exception)
+        {
+            return new BaseResponse
+            {
+                StatusCode = 500,
+                Message = $"Error deleting employee: {exception.Message}",
+            };
+        }
+    }
+
+    public async Task<BaseResponse> EditEmployeeAsync(Employee employee)
+    {
+        try
+        {
+            using var context = await factory.CreateDbContextAsync();
+
+            context.Employees.Update(employee);
+
+            var updated = await context.SaveChangesAsync();
+
+            if (updated > 0)
+            {
+                return new BaseResponse
+                {
+                    StatusCode = 200,
+                    Message = "Success",
+                };
+            }
+            else
+            {
+                return new BaseResponse
+                {
+                    StatusCode = 400,
+                    Message = $"Error updating employee",
+                };
+            }
+        }
+        catch (Exception exception)
+        {
+            return new BaseResponse
+            {
+                StatusCode = 500,
+                Message = $"Error updating employee: {exception.Message}",
+            };
+        }
+    }
+
+    public async Task<GetEmployeeResponse> GetEmployeeAsync(Guid id)
+    {
+        try
+        {
+            using var context = await factory.CreateDbContextAsync();
+
+            var employee = await context.Employees.SingleOrDefaultAsync(e => e.Id == id);
+
+            if (employee != null)
+            {
+                return new GetEmployeeResponse
+                {
+                    StatusCode = 200,
+                    Message = "Success",
+                    Employee = employee,
+                };
+            }
+            else
+            {
+                return new GetEmployeeResponse
+                {
+                    StatusCode = 404,
+                    Message = $"Unable to get employee with id: {id}",
+                    Employee = employee,
+                };
+            }
+
+        }
+        catch (Exception exception)
+        {
+            return new GetEmployeeResponse
+            {
+                StatusCode = 500,
+                Message = $"Error getting employee: {exception.Message}",
+                Employee = null,
             };
         }
     }
