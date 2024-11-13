@@ -11,13 +11,17 @@
 
 <PageTitle>EMS - Employees</PageTitle>
 
-@if(_employees != null)
+@if(Employees != null)
 {
     <Card>
         <div class="table-responsive w-100">
+            <div class="form-floating mb-3">
+                <input class="form-control" id="floatingInputSearch" type="text" placeholder="Search" @oninput="FilterEmployees" />
+                <label for="floatingInputSearch">Search</label>
+            </div>
             <table class="table table-borderless mb-0">
                 <tbody>
-                    @foreach(var employee in _employees)
+                    @foreach (var employee in FilteredEmployees)
                     {
                         <tr class="shadow-lg m-1 employee-row mb-5">
                             <td class="text-center align-middle text-nowrap text-truncate overflow-hidden">
@@ -54,16 +58,29 @@
     [Inject] private IEmployeeService EmployeeService { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
 
-    private List<Employee>? _employees;
+    private List<Employee>? Employees { get; set; }
+    private List<Employee> FilteredEmployees { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
         var response = await EmployeeService.GetEmployeesAsync();
-        _employees = response.Employees;
+        Employees = response.Employees;
+        if (Employees != null)
+        {
+            FilteredEmployees = Employees;            
+        }
     }
 
     private void NavigateToEmployeeDetail(Guid id)
     {
         NavigationManager.NavigateTo($"/Employees/{id}");
+    }
+
+    private void FilterEmployees(ChangeEventArgs e)
+    {
+        if (Employees != null)
+        {
+            FilteredEmployees = Employees.Where(x => x.Name.IndexOf(e.Value!.ToString()!) >= 0).ToList();            
+        }
     }
 }
