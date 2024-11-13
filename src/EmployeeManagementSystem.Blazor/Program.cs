@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using EmployeeManagementSystem.Blazor.Components;
 using EmployeeManagementSystem.Blazor.Components.Account;
 using EmployeeManagementSystem.Blazor.Data;
@@ -16,6 +17,8 @@ public class Program
 
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+
+        builder.Services.AddBlazoredToast();
 
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddScoped<IdentityUserAccessor>();

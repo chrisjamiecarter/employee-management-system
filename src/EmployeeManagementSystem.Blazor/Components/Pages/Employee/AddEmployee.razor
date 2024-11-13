@@ -6,9 +6,10 @@
 @using EmployeeManagementSystem.Blazor.Services
 @using Microsoft.AspNetCore.Authorization
 
-@rendermode InteractiveServer
-
 @attribute [Authorize]
+@inject IEmployeeService EmployeeService
+@inject IToastService toastService
+@inject NavigationManager NavigationManager
 
 <PageTitle>EMS - Add Employee</PageTitle>
 
@@ -62,14 +63,29 @@
 </Card>
 
 @code {
-    [Inject] private IEmployeeService EmployeeService { get; set; }
-    [Inject] private NavigationManager NavigationManager { get; set; }
-
     private AddEmployeeRequest addEmployeeRequest = new();
 
     private async Task AddEmployeeAsync()
     {
         var response = await EmployeeService.AddEmployeeAsync(addEmployeeRequest);
+
+        if(response.StatusCode >= 200 && response.StatusCode <= 299)
+        {
+            toastService.ShowSuccess(response.Message);
+        }
+        else if (response.StatusCode >= 400 && response.StatusCode <= 499)
+        {
+            toastService.ShowWarning(response.Message);
+        }
+        else if (response.StatusCode >= 500 && response.StatusCode <= 599)
+        {
+            toastService.ShowError(response.Message);
+        }
+        else
+        {
+            toastService.ShowInfo($"Recieved unknown response: {response.Message}");
+        }
+
         NavigationManager.NavigateTo("/");
     }
 }

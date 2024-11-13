@@ -24,7 +24,7 @@ public class EmployeeService(IDbContextFactory<ApplicationDbContext> factory) : 
                 return new BaseResponse
                 {
                     StatusCode = 200,
-                    Message = "Success",
+                    Message = "Employee added successfully",
                 };
             }
             else
@@ -61,7 +61,7 @@ public class EmployeeService(IDbContextFactory<ApplicationDbContext> factory) : 
                 return new BaseResponse
                 {
                     StatusCode = 200,
-                    Message = "Success",
+                    Message = "Employee deleted successfully",
                 };
             }
             else
@@ -98,7 +98,7 @@ public class EmployeeService(IDbContextFactory<ApplicationDbContext> factory) : 
                 return new BaseResponse
                 {
                     StatusCode = 200,
-                    Message = "Success",
+                    Message = "Employee updated successfully",
                 };
             }
             else

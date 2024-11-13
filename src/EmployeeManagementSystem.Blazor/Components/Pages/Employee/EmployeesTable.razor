@@ -5,9 +5,10 @@
 @using EmployeeManagementSystem.Blazor.Services
 @using Microsoft.AspNetCore.Authorization
 
-@rendermode InteractiveServer
-
 @attribute [Authorize]
+@inject IToastService ToastService
+@inject IEmployeeService EmployeeService
+@inject NavigationManager NavigationManager
 
 <PageTitle>EMS - Employees</PageTitle>
 
@@ -55,9 +56,6 @@
 }
 
 @code {
-    [Inject] private IEmployeeService EmployeeService { get; set; }
-    [Inject] private NavigationManager NavigationManager { get; set; }
-
     private List<Employee>? Employees { get; set; }
     private List<Employee> FilteredEmployees { get; set; } = [];
 
@@ -78,9 +76,10 @@
 
     private void FilterEmployees(ChangeEventArgs e)
     {
+        var searchString = e.Value?.ToString()?.ToLower() ?? "";
         if (Employees != null)
         {
-            FilteredEmployees = Employees.Where(x => x.Name.IndexOf(e.Value!.ToString()!) >= 0).ToList();            
+            FilteredEmployees = Employees.Where(x => x.Name.ToLower().IndexOf(searchString) >= 0).ToList();            
         }
     }
 }

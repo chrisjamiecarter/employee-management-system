@@ -8,9 +8,10 @@
 @using EmployeeManagementSystem.Blazor.Services;
 @using Microsoft.AspNetCore.Authorization
 
-@rendermode InteractiveServer
-
 @attribute [Authorize]
+@inject IEmployeeService EmployeeService
+@inject IToastService toastService
+@inject NavigationManager NavigationManager
 
 <PageTitle>EMS - Edit Employee</PageTitle>
 
@@ -77,9 +78,6 @@
 
 @code {
     [Parameter] public Guid Id { get; set; }
-
-    [Inject] private IEmployeeService EmployeeService { get; set; }
-    [Inject] private NavigationManager NavigationManager { get; set; }
 
     private Employee? Employee { get; set; }
     private bool ShowDeleteModal { get; set; }
