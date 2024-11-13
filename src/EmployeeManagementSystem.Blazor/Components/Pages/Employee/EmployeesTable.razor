@@ -18,10 +18,10 @@
                     @foreach(var employee in _employees)
                     {
                         <tr class="shadow-lg m-1 employee-row mb-5">
-                            <td class="text-center align-middle">
+                            <td class="text-center align-middle text-nowrap text-truncate overflow-hidden">
                                 <img class="rounded-circle" width="60" src="@employee.ImageUrl" />
                             </td>
-                            <td class="align-middle">
+                            <td class="align-middle text-nowrap text-truncate overflow-hidden">
                                 <div class="pt-2">
                                     <div class="fs-5 fw-bold lh-sm">
                                         @employee.Name
@@ -31,10 +31,10 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-center align-middle employee-(employee.EmployeeType)">
+                            <td class="text-center align-middle text-nowrap text-truncate overflow-hidden">
                                 @employee.EmployeeType.GetDisplayName()
                             </td>
-                            <td class="text-center align-middle fs-6 fw-bold">
+                            <td class="text-center align-middle fs-6 fw-bold text-nowrap text-truncate overflow-hidden">
                                 $@employee.Salary
                             </td>
                         </tr>
