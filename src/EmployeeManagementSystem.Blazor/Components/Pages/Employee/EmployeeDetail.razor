@@ -59,8 +59,9 @@
                         <label for="floatingInputImageUrl">Image URL</label>
                         <ValidationMessage For="() => editEmployeeRequest.ImageUrl" class="text-danger" />
                     </div>
-                    <button class="btn btn-outline-secondary" type="submit">Update</button>
+                    <button class="btn btn-warning" type="submit">Update</button>
                     <button class="btn btn-danger" type="button" @onclick="DeleteEmployeeAsync">Delele</button>
+                    <button class="btn btn-outline-secondary" type="button" @onclick="Cancel">Cancel</button>
                 </EditForm>
             </div>
         </div>
@@ -110,6 +111,11 @@
             var response = await EmployeeService.DeleteEmployeeAsync(Employee);
         }
 
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void Cancel()
+    {
         NavigationManager.NavigateTo("/");
     }
 }
