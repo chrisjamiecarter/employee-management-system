@@ -60,12 +60,19 @@
                         <ValidationMessage For="() => editEmployeeRequest.ImageUrl" class="text-danger" />
                     </div>
                     <button class="btn btn-warning" type="submit">Update</button>
-                    <button class="btn btn-danger" type="button" @onclick="DeleteEmployeeAsync">Delele</button>
+                    <button class="btn btn-danger" type="button" @onclick="ShowDeleteConfirmation">Delele</button>
                     <button class="btn btn-outline-secondary" type="button" @onclick="Cancel">Cancel</button>
                 </EditForm>
             </div>
         </div>
     </Card>
+
+    @if(ShowDeleteModal)
+    {
+    <ConfirmationModal OnCancelCallback="HideDeleteConfirmation" OnConfirmCallback="DeleteEmployeeAsync">
+        <p>Are you sure you want to delete this employee?</p>
+    </ConfirmationModal>
+    }
 }
 
 @code {
@@ -75,6 +82,7 @@
     [Inject] private NavigationManager NavigationManager { get; set; }
 
     private Employee? Employee { get; set; }
+    private bool ShowDeleteModal { get; set; }
 
     private EditEmployeeRequest editEmployeeRequest = new();
 
@@ -117,5 +125,16 @@
     private void Cancel()
     {
         NavigationManager.NavigateTo("/");
+    }
+
+
+    private void ShowDeleteConfirmation()
+    {
+        ShowDeleteModal = true;
+    }
+    
+    private void HideDeleteConfirmation()
+    {
+        ShowDeleteModal = false;
     }
 }

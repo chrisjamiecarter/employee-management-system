@@ -1,0 +1,23 @@
+﻿<div class="modal d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Confirmation Required</h1>
+                <button type="button" class="btn-close" onclick="@OnCancelCallback" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @ChildContent
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="@OnCancelCallback">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="@OnConfirmCallback">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback OnConfirmCallback { get; set; }
+    [Parameter] public EventCallback OnCancelCallback { get; set; }
+}
